@@ -1,9 +1,5 @@
 plugins {
     id 'java'
-    id 'application'
-    id 'org.javamodularity.moduleplugin' version '1.8.12'
-    id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'org.beryx.jlink' version '2.25.0'
 }
 
 group 'com.example'
@@ -14,11 +10,11 @@ repositories {
 }
 
 project.ext {
-    cucumberVersion = '7.11.1'
-    seleniumVersion = '4.8.1'
+    cucumberVersion = '7.14.0'
+    seleniumVersion = '4.15.0'
     assertVersion = '3.24.2'
-    slf4jVersion = '2.0.6'
-    bonigarcia = '5.3.2'
+    slf4jVersion = '2.0.9'
+    bonigarcia = '5.6.2'
     log4j = '1.2.17'
     javafaker = '1.0.2'
 }
@@ -29,11 +25,11 @@ dependencies {
     testImplementation group: 'com.github.javafaker', name: 'javafaker', version: javafaker
     testImplementation group: 'org.assertj', name: 'assertj-core', version: assertVersion
     testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: slf4jVersion
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: seleniumVersion
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: seleniumVersion
-    implementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: bonigarcia
-    implementation group: 'log4j', name: 'log4j', version: log4j
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-http-jdk-client', version: seleniumVersion
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: seleniumVersion
+    testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: seleniumVersion
+    testImplementation group: 'io.github.bonigarcia', name: 'webdrivermanager', version: bonigarcia
+    testImplementation group: 'log4j', name: 'log4j', version: log4j
+    //testImplementation group: 'org.seleniumhq.selenium', name: 'selenium-http-jdk-client', version: seleniumVersion
 }
 
 configurations {
@@ -52,7 +48,7 @@ task cucumber() {
             args = [
                     '--plugin', 'html:reports/test-report/report.html',
                     '--plugin', 'pretty',
-                    '--glue', 'com.example', 'src/test/resources',
+                    '--glue', 'com.example.steps', 'src/test/resources',
                     '--tags', '@Execution'
             ]
         }
