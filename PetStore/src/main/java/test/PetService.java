@@ -1,16 +1,9 @@
 package test;
 
 import com.github.javafaker.Faker;
-import io.restassured.RestAssured;
-import io.restassured.mapper.ObjectMapper;
-import io.restassured.mapper.ObjectMapperType;
 import io.restassured.response.Response;
-import org.testng.annotations.BeforeClass;
+import org.testng.Assert;
 import org.testng.annotations.Test;
-import utility.ApiUtilities;
-
-import static io.restassured.RestAssured.get;
-import static io.restassured.RestAssured.given;
 
 public class PetService extends BaseClass{
     private Response response;
@@ -20,12 +13,22 @@ public class PetService extends BaseClass{
         sendAddNewPet();
         pet.setId(Long.parseLong(BaseClass.apiUtilities.extractValueBody(getResponse(), "id")));
 
+        Assert.assertEquals(200, response.statusCode());
+        Assert.assertTrue(response.getBody().asString().length() > 0);
+        Assert.assertTrue(response.time() < 2000);
+
     }
 
     @Test(description = "Search Pet for ID", priority=2)
     public void GetNewPet(){
         getNewPet();
-        System.out.println("ID : " + pet.getId());
+        System.out.println(response.getBody().asString());
+        Assert.assertEquals(Long.parseLong(BaseClass.apiUtilities.extractValueBody(getResponse(), "id")), pet.getId());
+        Assert.assertEquals(BaseClass.apiUtilities.extractValueBody(getResponse(), "name"), pet.getName());
+        Assert.assertEquals(BaseClass.apiUtilities.extractValueBody(getResponse(), "status"), pet.getStatus());
+        Assert.assertEquals(200, response.statusCode());
+        Assert.assertTrue(response.getBody().asString().length() > 0);
+        Assert.assertTrue(response.time() < 2000);
     }
 
     @Test(description = "Update name and status", priority=3)
@@ -35,9 +38,12 @@ public class PetService extends BaseClass{
         updateNewPet();
         pet.setStatus(BaseClass.apiUtilities.extractValueBody(getResponse(), "status"));
         pet.setName(BaseClass.apiUtilities.extractValueBody(getResponse(), "name"));
-        System.out.println("ID : " + pet.getId());
-        System.out.println("Name : " + pet.getName());
-        System.out.println("Status : " + pet.getStatus());
+        Assert.assertEquals(Long.parseLong(BaseClass.apiUtilities.extractValueBody(getResponse(), "id")), pet.getId());
+        Assert.assertEquals(BaseClass.apiUtilities.extractValueBody(getResponse(), "name"), pet.getName());
+        Assert.assertEquals(BaseClass.apiUtilities.extractValueBody(getResponse(), "status"), pet.getStatus());
+        Assert.assertEquals(200, response.statusCode());
+        Assert.assertTrue(response.getBody().asString().length() > 0);
+        Assert.assertTrue(response.time() < 2000);
 
     }
 
@@ -45,8 +51,7 @@ public class PetService extends BaseClass{
     public void GetPetForStatus() {
         findByStatus();
 
-        System.out.println(BaseClass.apiUtilities.extractValueBody(getResponse(), "status"));
-        System.out.println(BaseClass.apiUtilities.extractValueBody(getResponse(), "id"));
+
     }
 
 
@@ -55,7 +60,7 @@ public class PetService extends BaseClass{
     }
 
     public void getNewPet(){
-        response = apiUtilities.sendGetRequest(returnURL(), "id", pet);
+        response = apiUtilities.sendGetRequestById(returnURL(), "id", pet);
     }
 
     public void updateNewPet(){
@@ -63,7 +68,7 @@ public class PetService extends BaseClass{
     }
 
     public void findByStatus(){
-        response = apiUtilities.sendGetRequest(returnURL()+ "/findByStatus", "status", pet);
+        response = apiUtilities.sendGetRequestByStatus(returnURL()+ "/findByStatus", "status", pet);
     }
     public String returnURL() {
         return baseURL + "pet";

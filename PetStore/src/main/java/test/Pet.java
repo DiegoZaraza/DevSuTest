@@ -1,9 +1,12 @@
 package test;
 
+import java.util.List;
+
 public class Pet {
     private String name;
     private String status;
     private Long id;
+
 
     public Pet(String name, String status, Long id) {
         this.name = name;
@@ -39,4 +42,5 @@ public class Pet {
     public void setId(Long id) {
         this.id = id;
     }
+
 }
