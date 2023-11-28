@@ -35,7 +35,6 @@ public class ApiUtilities {
      * @return
      */
     public Response sendGetRequestByStatus(String URL, String param, Pet pet){
-        System.out.println(URL + " - " + pet.getId() + " - " + pet.getName() + " - " + pet.getStatus());
         return given().headers("Content-Type", "application/json").
                 param(param, pet.getStatus()).
                 when().
@@ -46,7 +45,6 @@ public class ApiUtilities {
     }
 
     public Response sendGetRequestById(String URL, String param, Pet pet){
-        System.out.println(URL + " - " + pet.getId() + " - " + pet.getName() + " - " + pet.getStatus());
         return given().headers("Content-Type", "application/json").
                 when().
                 get(URL + "/" + pet.getId()).
