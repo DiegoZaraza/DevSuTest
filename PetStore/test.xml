@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="PetStore" verbose="1">
+    <test name="AddPet">
+        <classes>
+            <class name="test.PetService">
+                <methods>
+                    <include name="AddNewPet"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
